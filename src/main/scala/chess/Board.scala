@@ -6,11 +6,13 @@ import scala.annotation.tailrec
 
 case class Board(size: BoardSize, pieces: Set[Piece] = Set.empty) {
 
-  def isPositionVacant(position: PiecePosition) = {
-    !pieces.map(_.position).contains(position)
-  }
-
   def placePiece(piece: Piece): Set[Board] = {
+
+    val occupiedPositions = pieces.map(_.position).groupBy(_.x).mapValues(_.map(_.y))
+
+    def isPositionVacant(position: PiecePosition) = {
+      !(occupiedPositions.contains(position.x) && occupiedPositions(position.x).contains(position.y))
+    }
 
     val pieceOnDifferentPositions = for {
       y <- 0 until size.height

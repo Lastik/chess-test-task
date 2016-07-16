@@ -5,8 +5,8 @@
  * All pieces are of same color, and there are no pawns among the pieces.
 
 #Input:
- *board dimensions, m×n
- *the list of pieces to lay out on the board
+ * board dimensions, m×n
+ * the list of pieces to lay out on the board
 
 #Goal:
 Find all distinct layouts of these pieces such that no piece attacks the others

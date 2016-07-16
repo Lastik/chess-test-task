@@ -1,6 +1,6 @@
 package chess
 
-import chess.figure.Figure
+import chess.piece.Piece
 
 import scala.annotation.tailrec
 
@@ -8,18 +8,18 @@ object BoardExtensions {
 
   implicit class ExtendedBoard(board: Board) {
 
-    def placeFigures(figures: List[Figure]): Set[Board] = {
+    def placePieces(pieces: List[Piece]): Set[Board] = {
 
       @tailrec
-      def placeFiguresIteration(remainingFigures: List[Figure], boardsVariants: Set[Board] = Set.empty): Set[Board] = {
+      def placePiecesIteration(remainingFigures: List[Piece], boardsVariants: Set[Board] = Set.empty): Set[Board] = {
         remainingFigures match {
           case figure :: newRemainingFigures =>
-            placeFiguresIteration(newRemainingFigures, boardsVariants.par.map(board => board.placeFigure(figure)).seq.flatten)
+            placePiecesIteration(newRemainingFigures, boardsVariants.par.flatMap(board => board.placePiece(figure)).seq)
           case Nil => boardsVariants
         }
       }
 
-      placeFiguresIteration(figures, Set(board))
+      placePiecesIteration(pieces, Set(board))
     }
   }
 

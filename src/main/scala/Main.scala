@@ -1,5 +1,5 @@
 import chess.{Board, BoardSize}
-import chess.figure.kind._
+import chess.piece.kind._
 
 object Main extends App {
 
@@ -7,13 +7,13 @@ object Main extends App {
     King(), King(), Queen(), Rook(), Bishop(), Knight()
   )
 
-  println(s"Figures: ${figures.mkString(", ")}")
+  println(s"Pieces: ${figures.mkString(", ")}")
 
   val board = Board(size = BoardSize(width = 6, height = 9))
   println(s"Board size: ${board.size}")
 
   println(s"Calculating distinct boards variants...")
-  val boardsVariantsCount = board.calcDistinctBoardsVariantsToPlaceFigures(figures)
+  val boardsVariantsCount = board.calcDistinctBoardsVariantsToPlacePieces(figures)
 
   println(s"Amount of boards variants: $boardsVariantsCount")
 

@@ -1,4 +1,4 @@
-import chess.figure.kind.{King, Knight, Queen, Rook}
+import chess.piece.kind.{King, Knight, Queen, Rook}
 import chess.{Board, BoardSize}
 import org.scalatest.{FunSpec, Matchers}
 
@@ -12,7 +12,7 @@ class BoardSpec extends FunSpec with Matchers {
 
       val board = Board(size = BoardSize(3, 3))
 
-      val boardsWithKings = board.placeFigures(List(King(), King(), King(), King()))
+      val boardsWithKings = board.placePieces(List(King(), King(), King(), King()))
 
       boardsWithKings.size shouldEqual 1
 
@@ -28,7 +28,7 @@ class BoardSpec extends FunSpec with Matchers {
 
       val board = Board(size = BoardSize(8, 8))
 
-      val boardsWithQueens = board.placeFigures(List.fill(8)(Queen()))
+      val boardsWithQueens = board.placePieces(List.fill(8)(Queen()))
 
       boardsWithQueens.size shouldEqual 92
 
@@ -42,7 +42,7 @@ class BoardSpec extends FunSpec with Matchers {
 
       val board = Board(size = BoardSize(3, 3))
 
-      val boardsWithKingsCount = board.calcDistinctBoardsVariantsToPlaceFigures(List.fill(3)(King()))
+      val boardsWithKingsCount = board.calcDistinctBoardsVariantsToPlacePieces(List.fill(3)(King()))
 
       boardsWithKingsCount shouldEqual 8
 
@@ -52,7 +52,7 @@ class BoardSpec extends FunSpec with Matchers {
 
       val board = Board(size = BoardSize(3, 3))
 
-      val boardsWithRooksCount = board.calcDistinctBoardsVariantsToPlaceFigures(List.fill(3)(Rook()))
+      val boardsWithRooksCount = board.calcDistinctBoardsVariantsToPlacePieces(List.fill(3)(Rook()))
 
       boardsWithRooksCount shouldEqual 6
 
@@ -64,7 +64,7 @@ class BoardSpec extends FunSpec with Matchers {
 
       val board = Board(size = BoardSize(3, 3))
 
-      val boardsVariations = board.placeFigures(Queen() :: List.fill(3)(King()))
+      val boardsVariations = board.placePieces(Queen() :: List.fill(3)(King()))
 
       boardsVariations.size shouldEqual 0
 
@@ -74,7 +74,7 @@ class BoardSpec extends FunSpec with Matchers {
 
       val board = Board(size = BoardSize(3, 3))
 
-      val boardsVariationsCount = board.calcDistinctBoardsVariantsToPlaceFigures(Queen() :: List.fill(3)(King()))
+      val boardsVariationsCount = board.calcDistinctBoardsVariantsToPlacePieces(Queen() :: List.fill(3)(King()))
 
       boardsVariationsCount shouldEqual 0
 
@@ -86,17 +86,17 @@ class BoardSpec extends FunSpec with Matchers {
 
       val board = Board(size = BoardSize(3, 3))
 
-      val boardsVariations = board.placeFigures(Knight() :: Knight() :: King() :: King() :: Nil)
+      val boardsVariations = board.placePieces(Knight() :: Knight() :: King() :: King() :: Nil)
 
       boardsVariations.size shouldEqual 6
 
     }
 
-    it("Be able correctly calculate amount of different variations of boards for empty list of figures") {
+    it("Be able correctly calculate amount of different variations of boards for empty list of pieces") {
 
       val board = Board(size = BoardSize(3, 3))
 
-      val boardsVariationsCount = board.calcDistinctBoardsVariantsToPlaceFigures(Nil)
+      val boardsVariationsCount = board.calcDistinctBoardsVariantsToPlacePieces(Nil)
 
       boardsVariationsCount shouldEqual 1
 

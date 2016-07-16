@@ -1,73 +1,73 @@
 package chess
 
-import chess.figure.{Figure, FigurePosition}
+import chess.piece.{Piece, PiecePosition}
 
 import scala.annotation.tailrec
 
-case class Board(size: BoardSize, figures: Set[Figure] = Set.empty) {
+case class Board(size: BoardSize, pieces: Set[Piece] = Set.empty) {
 
-  def isPositionVacant(position: FigurePosition) = {
-    !figures.map(_.position).contains(position)
+  def isPositionVacant(position: PiecePosition) = {
+    !pieces.map(_.position).contains(position)
   }
 
-  def placeFigure(figure: Figure): Set[Board] = {
+  def placePiece(piece: Piece): Set[Board] = {
 
-    val figureOnDifferentPositions = for {
+    val pieceOnDifferentPositions = for {
       y <- 0 until size.height
       x <- 0 until size.width
 
-      positioningFigure = figure.withPosition(newPosition = FigurePosition(x, y))
+      positioningPiece = piece.withPosition(newPosition = PiecePosition(x, y))
 
-      if isPositionVacant(positioningFigure.position) &&
-        !figures.exists(_.canAttack(positioningFigure)) &&
-        !figures.exists(boardFigure => positioningFigure.canAttack(boardFigure))
+      if isPositionVacant(positioningPiece.position) &&
+        !pieces.exists(_.canAttack(positioningPiece)) &&
+        !pieces.exists(boardPiece => positioningPiece.canAttack(boardPiece))
 
-    } yield positioningFigure
+    } yield positioningPiece
 
-    figureOnDifferentPositions.map(figure => this.copy(figures = figures + figure)).toSet
+    pieceOnDifferentPositions.map(piece => this.copy(pieces = pieces + piece)).toSet
   }
 
-  def calcDistinctBoardsVariantsToPlaceFigures(figures: List[Figure]): Int = {
+  def calcDistinctBoardsVariantsToPlacePieces(pieces: List[Piece]): Int = {
 
     @tailrec
-    def calcBoardsVariantsIteration(remainingFigures: List[Figure], allFigures: List[Figure], boardsVariants: Set[Board]): Int = {
+    def calcBoardsVariantsIteration(remainingPieces: List[Piece], allPieces: List[Piece], boardsVariants: Set[Board]): Int = {
 
-      println(s"Figures left: ${remainingFigures.length}, boards variants: ${boardsVariants.size}")
+      println(s"Pieces left: ${remainingPieces.length}, boards variants: ${boardsVariants.size}")
 
-      remainingFigures match {
-        case figure :: Nil =>
-          if (!allFigures.dropRight(1).exists(f => f.name == figure.name))
-            calcBoardsVariantsCountWithNonRepeatingFigureForBoards(boardsVariants, figure)
+      remainingPieces match {
+        case piece :: Nil =>
+          if (!allPieces.dropRight(1).exists(f => f.name == piece.name))
+            calcBoardsVariantsCountWithNonRepeatingPieceForBoards(boardsVariants, piece)
           else
-            getBoardsVariantsWithFigureForBoards(boardsVariants, figure).size
-        case figure :: newRemainingFigures =>
-          calcBoardsVariantsIteration(newRemainingFigures, allFigures, getBoardsVariantsWithFigureForBoards(boardsVariants, figure))
+            getBoardsVariantsWithPieceForBoards(boardsVariants, piece).size
+        case piece :: newRemainingPieces =>
+          calcBoardsVariantsIteration(newRemainingPieces, allPieces, getBoardsVariantsWithPieceForBoards(boardsVariants, piece))
         case Nil => boardsVariants.size
       }
     }
 
-    def getBoardsVariantsWithFigureForBoards(boards: Set[Board], figure: Figure) = {
-      boards.par.map(board => board.placeFigure(figure)).seq.flatten
+    def getBoardsVariantsWithPieceForBoards(boards: Set[Board], piece: Piece) = {
+      boards.par.flatMap(board => board.placePiece(piece)).seq
     }
 
-    def calcBoardsVariantsCountWithNonRepeatingFigureForBoards(boards: Set[Board], figure: Figure) = {
-      boards.toList.par.map(board => board.placeFigure(figure).size).seq.sum
+    def calcBoardsVariantsCountWithNonRepeatingPieceForBoards(boards: Set[Board], piece: Piece) = {
+      boards.toList.par.map(board => board.placePiece(piece).size).seq.sum
     }
 
-    def sortFiguresSoThatRepeatingGoFirst(figures: List[Figure]) = {
-      figures.groupBy(_.name).values.toList.sortBy(-_.length).flatten
+    def sortPiecesSoThatRepeatingGoFirst(pieces: List[Piece]) = {
+      pieces.groupBy(_.name).values.toList.sortBy(-_.length).flatten
     }
 
-    val sortedFigures = sortFiguresSoThatRepeatingGoFirst(figures)
+    val sortedPieces = sortPiecesSoThatRepeatingGoFirst(pieces)
 
-    calcBoardsVariantsIteration(sortedFigures, sortedFigures, Set(this))
+    calcBoardsVariantsIteration(sortedPieces, sortedPieces, Set(this))
   }
 
   override def toString = {
     (0 until size.height).reverse.map(row => {
       (0 until size.width).map(col => {
-        figures.find(_.position == FigurePosition(col, row)) match {
-          case Some(figure) => figure.symbol
+        pieces.find(_.position == PiecePosition(col, row)) match {
+          case Some(piece) => piece.symbol
           case None => 'o'
         }
       }).mkString("")

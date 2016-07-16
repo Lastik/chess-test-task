@@ -8,10 +8,10 @@ case class Board(size: BoardSize, pieces: Set[Piece] = Set.empty) {
 
   def placePiece(piece: Piece): Set[Board] = {
 
-    val occupiedPositions = pieces.map(_.position).groupBy(_.x).mapValues(_.map(_.y))
+    val occupiedPositionsXY = pieces.map(_.position).groupBy(_.x).mapValues(_.map(_.y))
 
     def isPositionVacant(position: PiecePosition) = {
-      !(occupiedPositions.contains(position.x) && occupiedPositions(position.x).contains(position.y))
+      !(occupiedPositionsXY.contains(position.x) && occupiedPositionsXY(position.x).contains(position.y))
     }
 
     val pieceOnDifferentPositions = for {

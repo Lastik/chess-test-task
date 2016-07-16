@@ -15,8 +15,8 @@ trait Piece {
     movementSchemes.exists(_.canMove(position, otherPosition))
   }
 
-  def canAttack(otherFigure: Piece): Boolean = {
-    canAttack(otherFigure.position)
+  def canAttack(otherPiece: Piece): Boolean = {
+    canAttack(otherPiece.position)
   }
 
   def withPosition(newPosition: PiecePosition): Piece

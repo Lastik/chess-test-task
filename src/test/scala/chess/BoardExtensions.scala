@@ -11,10 +11,10 @@ object BoardExtensions {
     def placePieces(pieces: List[Piece]): Set[Board] = {
 
       @tailrec
-      def placePiecesIteration(remainingFigures: List[Piece], boardsVariants: Set[Board] = Set.empty): Set[Board] = {
-        remainingFigures match {
-          case figure :: newRemainingFigures =>
-            placePiecesIteration(newRemainingFigures, boardsVariants.par.flatMap(board => board.placePiece(figure)).seq)
+      def placePiecesIteration(remainingPieces: List[Piece], boardsVariants: Set[Board] = Set.empty): Set[Board] = {
+        remainingPieces match {
+          case piece :: newRemainingPieces =>
+            placePiecesIteration(newRemainingPieces, boardsVariants.par.flatMap(board => board.placePiece(piece)).seq)
           case Nil => boardsVariants
         }
       }

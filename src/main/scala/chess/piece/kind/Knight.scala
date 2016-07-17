@@ -3,7 +3,7 @@ package chess.piece.kind
 import chess.piece._
 
 case class Knight(positionOpt: Option[PiecePosition] = None) extends Piece{
-  def name = "Knight"
+  def name = Knight.Name
 
   def symbol = '♘'
 
@@ -13,5 +13,8 @@ case class Knight(positionOpt: Option[PiecePosition] = None) extends Piece{
 }
 
 object Knight {
+
+  val Name = "Knight"
+
   def apply(coords: (Int, Int)): Knight = Knight(positionOpt = Some(PiecePosition(coords._1, coords._2)))
 }

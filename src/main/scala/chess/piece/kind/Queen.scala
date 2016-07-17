@@ -3,7 +3,7 @@ package chess.piece.kind
 import chess.piece._
 
 case class Queen(positionOpt: Option[PiecePosition] = None) extends Piece {
-  def name = "Queen"
+  def name = Queen.Name
 
   def symbol = '♕'
 
@@ -13,6 +13,9 @@ case class Queen(positionOpt: Option[PiecePosition] = None) extends Piece {
 }
 
 object Queen {
+
+  val Name = "Queen"
+
   val MovementSchemes = List(
     new StraightLineMovementScheme {
       val maxDistance = Int.MaxValue

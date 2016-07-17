@@ -3,7 +3,7 @@ package chess.piece.kind
 import chess.piece._
 
 case class Bishop(positionOpt: Option[PiecePosition] = None) extends Piece {
-  def name = "Bishop"
+  def name = Bishop.Name
 
   def symbol = '♗'
 
@@ -13,6 +13,9 @@ case class Bishop(positionOpt: Option[PiecePosition] = None) extends Piece {
 }
 
 object Bishop {
+
+  val Name = "Bishop"
+
   val MovementSchemes = List(
     new DiagonalLineMovementScheme {
       val maxDistance = Int.MaxValue

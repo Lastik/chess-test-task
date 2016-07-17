@@ -3,7 +3,7 @@ package chess.piece.kind
 import chess.piece._
 
 case class Rook(positionOpt: Option[PiecePosition] = None) extends Piece{
-  def name = "Rook"
+  def name = Rook.Name
 
   def symbol = '♖'
 
@@ -13,6 +13,9 @@ case class Rook(positionOpt: Option[PiecePosition] = None) extends Piece{
 }
 
 object Rook {
+
+  val Name = "Rook"
+
   val MovementSchemes = List(
     new StraightLineMovementScheme {
       val maxDistance = Int.MaxValue

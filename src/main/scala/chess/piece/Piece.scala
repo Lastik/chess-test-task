@@ -27,13 +27,19 @@ trait Piece {
 }
 
 object Piece {
-  def parsePiecesFromString(piecesStr: String): List[Piece] = {
-    piecesStr.split(" ").toList.map {
-      case Bishop.Name => Bishop()
-      case King.Name => King()
-      case Knight.Name => Knight()
-      case Queen.Name => Queen()
-      case Rook.Name => Rook()
+  def parsePiecesFromString(piecesStr: String): Option[List[Piece]] = {
+    val piecesOpts = piecesStr.split(" ").toList.map {
+      case Bishop.Name => Some(Bishop())
+      case King.Name => Some(King())
+      case Knight.Name => Some(Knight())
+      case Queen.Name => Some(Queen())
+      case Rook.Name => Some(Rook())
+      case _ => None
     }
+
+    if (piecesOpts.contains(None))
+      None
+    else
+      Some(piecesOpts.map(_.get))
   }
 }

@@ -18,7 +18,13 @@ object Main extends App {
       defaultPieces
     }
     else {
-      Piece.parsePiecesFromString(piecesStr)
+      Piece.parsePiecesFromString(piecesStr) match {
+        case Some(parsedPieces) =>
+          parsedPieces
+        case None =>
+          println(s"Failed to parse input pieces. Exiting...")
+          sys.exit(1)
+      }
     }
   }
 
